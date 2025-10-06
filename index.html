@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字分词处理平台</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入本地Font Awesome -->
+    <link rel="stylesheet" href="lib/fontawesome/css/all.min.css">
+</head>
+<body>
+    <!-- 页面顶部导航栏 -->
+    <header>
+        <div class="nav-container container">
+            <!-- 网站Logo -->
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>文字分词处理平台</span>
+            </div>
+            <!-- 主导航链接 -->
+            <ul class="nav-links">
+                <li><a href="#" class="active" data-page="auto-punctuation">首页</a></li>
+                <li><a href="#" data-page="auto-punctuation">自动标点</a></li>
+                <li><a href="#" data-page="auto-segmentation">自动分词</a></li>
+                <li><a href="#" data-page="about">关于我们</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="container">
+        <div class="main-content">
+            <!-- 左侧功能导航栏 -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <h3>功能导航</h3>
+                    <ul class="sidebar-links">
+                        <li><a href="#" class="active" data-page="auto-punctuation"><i class="fas fa-pencil-alt"></i> 自动标点/句读</a></li>
+                        <li><a href="#" data-page="auto-segmentation"><i class="fas fa-language"></i> 自动分词</a></li> 
+                        <li><a href="#" data-page="text-upload"><i class="fas fa-upload"></i> 文本保存</a></li>
+                        <li><a href="#" data-page="result-download"><i class="fas fa-download"></i> 结果下载</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>使用说明</h3>
+                    <ul class="sidebar-links">
+                        <li><a href="#" data-page="help"><i class="fas fa-question-circle"></i> 使用帮助</a></li>
+                        <li><a href="#" data-page="faq"><i class="fas fa-comments"></i> 常见问题</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 右侧内容区域 -->
+            <div class="content-area">
+                <!-- 自动标点功能区域 -->
+                <section id="auto-punctuation" class="page-section active">
+                    <h1 class="page-title">文字标点处理系统</h1>
+                    <h2 class="section-title">自动标点/句读</h2>
+                    
+                    <!-- 功能卡片区域 -->
+                    <div class="function-cards">
+                        <div class="card" onclick="clearText()">
+                            <i class="fas fa-eraser"></i>
+                            <h3>清空</h3>
+                            <p>清空当前输入文本区域</p>
+                        </div>
+                        
+                        <div class="card" onclick="loadExamples()">
+                            <i class="fas fa-file-alt"></i>
+                            <h3>加载示例</h3>
+                            <p>加载预设的示例文本</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 文本输入区域 -->
+                    <div class="text-input-area">
+                        <textarea id="input-text" placeholder="请在此处粘贴待处理文本，或点击左上角上传文件..."></textarea>
+                        <div class="text-input-info">
+                            <span>注：关注文本仅支持中文！</span>
+                            <span id="word-count">当前字数:0/800</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 操作按钮组 -->
+                    <div class="btn-group">
+                        <button class="btn" onclick="processText()"><i class="fas fa-play"></i> 运行处理</button>
+                        <button class="btn btn-secondary" onclick="clearText()"><i class="fas fa-trash"></i> 清空文本</button>
+                    </div>
+                    
+                    <!-- 结果显示区域 -->
+                    <div id="result-area" class="result-area">
+                        <h3 class="result-title">处理结果</h3>
+                        <div id="result-content" class="result-content">
+                            <!-- 处理结果将在这里显示 -->
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn" onclick="downloadResult()"><i class="fas fa-download"></i> 下载结果</button>
+                            <button class="btn btn-secondary" onclick="uploadText()"><i class="fas fa-upload"></i> 文本保存</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 在内容区域中添加自动分词页面部分 -->
+                <section id="auto-segmentation" class="page-section">
+                    <h1 class="page-title">自动分词系统</h1>
+                    <h2 class="section-title">自动分词</h2>
+    
+                <!-- 功能卡片区域 -->
+                <div class="function-cards">
+                    <div class="card" onclick="clearSegmentationText()">
+                        <i class="fas fa-eraser"></i>
+                        <h3>清空</h3>
+                        <p>清空当前输入文本区域</p>
+                    </div>
+        
+                    <div class="card" onclick="loadSegmentationExamples()">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>加载示例</h3>
+                        <p>加载预设的示例文本</p>
+                    </div>
+                </div>
+    
+                <!-- 文本输入区域 -->
+                <div class="text-input-area">
+                    <textarea id="segmentation-text" placeholder="请在此处粘贴待分词文本..."></textarea>
+                    <div class="text-input-info">
+                        <span>注：自动分词功能将文本分割为有意义的词语</span>
+                        <span id="segmentation-word-count">当前字数：0/800</span>
+                    </div>
+                </div>
+    
+                <!-- 操作按钮组 -->
+                <div class="btn-group">
+                    <button class="btn" onclick="processSegmentation()"><i class="fas fa-play"></i> 运行分词</button>
+                    <button class="btn btn-secondary" onclick="clearSegmentationText()"><i class="fas fa-trash"></i> 清空文本</button>
+                </div>
+    
+             <!-- 结果显示区域 -->
+                <div id="segmentation-result-area" class="result-area">
+                    <h3 class="result-title">分词结果</h3>
+                    <div id="segmentation-result-content" class="result-content">
+                    <!-- 分词结果将在这里显示 -->
+                    </div>
+                        <div class="result-actions">
+                        <button class="btn" onclick="downloadSegmentationResult()"><i class="fas fa-download"></i> 下载结果</button>
+                        <button class="btn btn-secondary" onclick="uploadSegmentationText()"><i class="fas fa-upload"></i> 文本上传</button>
+                    </div>
+                </div>
+            </section>
+
+                <!-- 文本上传保存功能区域 -->
+                <section id="text-upload" class="page-section">
+                    <h1 class="page-title">文本保存</h1>
+                    <h2 class="section-title">已保存的文本</h2>
+                    
+                    <div id="uploaded-content" class="result-content">
+                        <p>暂无保存的文本内容</p>
+                    </div>
+                </section>
+                
+                <!-- 结果下载功能区域 -->
+                <section id="result-download" class="page-section">
+                    <h1 class="page-title">结果下载</h1>
+                    <h2 class="section-title">已下载的结果</h2>
+                    
+                    <div id="downloaded-content" class="result-content">
+                        <p>暂无下载的结果内容</p>
+                    </div>
+                </section>
+                
+                <!-- 关于我们功能区域 -->
+                <section id="about" class="page-section">
+                    <h1 class="page-title">关于我们</h1>
+                    
+                    <div class="about-content">
+                        <div class="about-card">
+                            <h3><i class="fas fa-info-circle"></i> 平台简介</h3>
+                            <p>本文字分词处理平台是一个注重于文字分段标点处理的工具。</p>
+                        </div>
+                        
+                        <div class="about-card">
+                            <h3><i class="fas fa-history"></i> 发展历程</h3>
+                            <p>本平台诞生不久，现在还是初始阶段。</p>
+                        </div>
+                        
+                        <div class="about-card">
+                            <h3><i class="fas fa-cogs"></i> 技术特点</h3>
+                            <ul>
+                                <li>基于深度学习的自动标点算法</li>
+                                <li>高精度中文分词引擎</li>
+                                <li>云端处理与本地处理相结合</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="about-card">
+                            <h3><i class="fas fa-users"></i> 团队介绍</h3>
+                            <p>暂时只有本人lyy。</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 使用帮助功能区域 -->
+                <section id="help" class="page-section">
+                    <h1 class="page-title">使用帮助</h1>
+                    
+                    <div class="help-content">
+                        <div class="help-item">
+                            <h3><i class="fas fa-question"></i> 如何使用自动标点功能？</h3>
+                            <p>1. 在文本输入区域输入或粘贴需要处理的文本</p>
+                            <p>2. 点击"运行处理"按钮，系统将自动进行分词和标点</p>
+                            <p>3. 查看处理结果，并可选择下载或上传保存</p>
+                        </div>
+                        
+                        <div class="help-item">
+                            <h3><i class="fas fa-language"></i> 如何使用自动分词功能？</h3> 
+                            <p>1. 切换到"自动分词"页面</p>
+                            <p>2. 在文本输入区域输入或粘贴需要分词的文本</p>
+                            <p>3. 点击"运行分词"按钮，系统将自动进行中文分词</p>
+                            <p>4. 查看分词结果，词与词之间以空格分隔</p>
+                            <p>5. 可选择下载或上传保存分词结果</p>
+                        </div>
+
+                        <div class="help-item">
+                            <h3><i class="fas fa-upload"></i> 如何保存文本？</h3>
+                            <p>在自动标点页面处理文本后，点击"文本保存"按钮即可将当前结果上传保存到保存区域</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 常见问题功能区域 -->
+                <section id="faq" class="page-section">
+                    <h1 class="page-title">常见问题</h1>
+                    
+                    <div class="faq-content">
+                        <div class="faq-item">
+                            <h3><i class="fas fa-question-circle"></i> 平台支持哪些文件格式？</h3>
+                            <p>目前支持.txt、.docx、.pdf格式的文本文件</p>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <h3><i class="fas fa-clock"></i> 处理速度如何？</h3>
+                            <p>还行吧，处理速度取决于文本长度和服务器负载。</p>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <h3><i class="fas fa-language"></i> 支持哪些语言的文本？</h3>
+                            <p>目前主要支持中文文本处理。</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面底部 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>智能标注平台致力于提供高效、准确的文字标注处理服务.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <a href="#" data-page="auto-punctuation">首页</a>
+                    <a href="#" data-page="auto-punctuation">自动标点</a>
+                    <a href="#" data-page="auto-segmentation">自动分词</a> 
+                    <a href="#" data-page="help">使用帮助</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p>邮箱: 123@1234567</p>
+                    <p>电话: 010-12345678</p>
+                    <p>地址: 浙江工商大学计算机科学与技术学院</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 智能标注平台 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 引入jieba分词库 -->
+    <script src="lib/jieba/jieba_wasm.js"></script>
+    <!-- 引入本地axios库 -->
+    <script src="lib/axios.min.js"></script>
+    <!-- 引入外部JavaScript文件 -->
+    <script src="script.js"></script>
+</body>
+</html>
